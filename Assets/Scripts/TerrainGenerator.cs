@@ -22,19 +22,28 @@ public class TerrainGenerator : MonoBehaviour
     public TeraindDetails[] detailsLayers;
     public Transform watersParent;
     public Transform waterPrefab;
+    public Transform plantsParent;
+    public Transform[] plantsPrefabs;
 
-    private void RemoveAlreadyGeneratedElements()
+    private float[,] heights;
+
+    private void DistroyAllChildrentForParent(Transform parent)
     {
         if (Application.platform == RuntimePlatform.WindowsEditor)
-            while (watersParent.childCount > 0)
-                DestroyImmediate(watersParent.GetChild(0).gameObject);
+            while (parent.childCount > 0)
+                DestroyImmediate(parent.GetChild(0).gameObject);
         else
-            foreach (Transform chil in watersParent) Destroy(chil.gameObject);
+            foreach (Transform chil in parent) Destroy(chil.gameObject);
+    }
+    private void RemoveAlreadyGeneratedElements()
+    {
+        DistroyAllChildrentForParent(watersParent);
+        DistroyAllChildrentForParent(plantsParent);
     }
     private void Generate()
     {
         RemoveAlreadyGeneratedElements();
-        float[,] heights = new float[ground.terrainData.heightmapResolution, ground.terrainData.heightmapResolution];
+        heights = new float[ground.terrainData.heightmapResolution, ground.terrainData.heightmapResolution];
         Vector2Int size = new Vector2Int(heights.GetLength(0), heights.GetLength(1));
         foreach(var layer in detailsLayers)
             layer.offset = new Vector2(Random.value * 100, Random.value * 100);
@@ -57,7 +66,6 @@ public class TerrainGenerator : MonoBehaviour
                     yy += layer.offset.y;
                     val += Mathf.PerlinNoise(xx, yy) * layer.height;
                 }
-                //Debug.Log(val);
                 heights[i,j] = val;
             }
 
@@ -69,6 +77,15 @@ public class TerrainGenerator : MonoBehaviour
                 var newW = Instantiate(waterPrefab, watersParent);
                 newW.localPosition = new Vector3(i * 100, 0, j * 100);
             }
+
+        //for (int i = 0; i < size.x; i+=10)
+        //    for (int j = 0; j < size.y; j+=10)
+        //    {
+        //        int inx = Random.Range(0, plantsPrefabs.Length - 1);
+        //        var trans = Instantiate(plantsPrefabs[inx], plantsParent);
+        //
+        //        trans.localPosition = new Vector3(i * 2, heights[j, i] * 600, j * 2);
+        //    }
     }
 
     void Update()
