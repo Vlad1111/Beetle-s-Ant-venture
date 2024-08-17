@@ -38,6 +38,16 @@ public class MovementBehaviour : MonoBehaviour
         else rb.velocity -= new Vector3(rb.velocity.x, 0, rb.velocity.z) * breackPower * Time.deltaTime;
         transform.localEulerAngles += new Vector3(0, rotationSpeed * movement.y * Time.deltaTime, 0);
 
+        //if(Mathf.Abs(movement.y) > 0)
+        //{
+        //    rb.angularVelocity += new Vector3(0, rotationSpeed * movement.y * Time.deltaTime, 0);
+        //    rb.constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationZ;
+        //}
+        //else
+        //{
+        //    rb.constraints = RigidbodyConstraints.FreezeRotation;
+        //}
+
         if (rb.velocity.y < 0)
             rb.velocity += new Vector3(0, rb.velocity.y, 0) * Time.deltaTime;
 
