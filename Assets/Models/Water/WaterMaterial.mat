@@ -215,7 +215,7 @@ Material:
     - _NormalScale: 1
     - _Normal_intensity: 0.39
     - _Normal_scale: 0.3
-    - _Normal_scroll_time: 0.08
+    - _Normal_scroll_time: 1
     - _ObjectSpaceUVMapping: 0
     - _ObjectSpaceUVMappingEmissive: 0
     - _OpaqueCullMode: 2
@@ -276,7 +276,7 @@ Material:
     - _BaseColor: {r: 0, g: 0.0816164, b: 1, a: 1}
     - _BaseColorMap_MipInfo: {r: 0, g: 0, b: 0, a: 0}
     - _Color: {r: 0.13585791, g: 0.40566033, b: 0.34162113, a: 0.11372549}
-    - _Deep_color: {r: 0.023529401, g: 0.49019608, b: 0.37810117, a: 0.30588236}
+    - _Deep_color: {r: 0.18129228, g: 0.33578172, b: 0.3962264, a: 0.36078432}
     - _DiffusionProfileAsset: {r: 0, g: 0, b: 0, a: 0}
     - _DoubleSidedConstants: {r: 1, g: 1, b: -1, a: 0}
     - _EmissionColor: {r: 1, g: 1, b: 1, a: 1}
@@ -284,7 +284,7 @@ Material:
     - _EmissiveColorLDR: {r: 0, g: 0, b: 0, a: 1}
     - _InvPrimScale: {r: 1, g: 1, b: 0, a: 0}
     - _IridescenceThicknessRemap: {r: 0, g: 1, b: 0, a: 0}
-    - _Shallow_Color: {r: 0.30584723, g: 0.7525139, b: 0.8207547, a: 0}
+    - _Shallow_Color: {r: 0.121568605, g: 0.52524537, b: 0.5294118, a: 0}
     - _SpecularColor: {r: 1, g: 1, b: 1, a: 1}
     - _ThicknessRemap: {r: 0, g: 1, b: 0, a: 0}
     - _TransmittanceColor: {r: 1, g: 1, b: 1, a: 1}
