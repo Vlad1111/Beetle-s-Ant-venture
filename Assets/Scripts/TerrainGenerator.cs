@@ -88,21 +88,22 @@ public class TerrainGenerator : MonoBehaviour
         ground.terrainData.SetHeights(0, 0, heights);
         ground.terrainData.SetAlphamaps(0, 0, textures);
 
-        for (int i = 0; i < 10; i++)
-            for (int j = 0; j < 10; j++)
+        for (int i = 0; i < 5; i++)
+            for (int j = 0; j < 5; j++)
             {
                 var newW = Instantiate(waterPrefab, watersParent);
                 newW.localPosition = new Vector3(i * 100, 0, j * 100);
             }
 
-        for (int i = 0; i < size.x; i+=10)
-            for (int j = 0; j < size.y; j+=10)
-            {
-                int inx = Random.Range(0, plantsPrefabs.Length - 1);
-                var trans = Instantiate(plantsPrefabs[inx], plantsParent);
-        
-                trans.localPosition = new Vector3(i * 2, heights[j, i] * ground.terrainData.heightmapScale.y, j * 2);
-            }
+        //var scale = 500f / ground.terrainData.heightmapResolution;
+        //for (int i = 0; i < size.x; i+=6)
+        //    for (int j = 0; j < size.y; j+=6)
+        //    {
+        //        int inx = Random.Range(0, plantsPrefabs.Length - 1);
+        //        var trans = Instantiate(plantsPrefabs[inx], plantsParent);
+        //
+        //        trans.localPosition = new Vector3(i * scale, heights[j, i] * ground.terrainData.heightmapScale.y, j * scale);
+        //    }
     }
 
     void Update()
