@@ -10,7 +10,22 @@ public class TerrainEditor : MonoBehaviour
     private bool lastEditTerain = false;
 
     private float[,] mask = null;
-    private const string SavedFile = "TerrainMask";
+    private const string SavedMask = "TerrainMask";
+
+    public static float[,] LoadMask(Terrain ground)
+    {
+        var text = Resources.Load<TextAsset>(SavedMask);
+        float[,] mask = null;
+        mask = new float[ground.terrainData.alphamapResolution, ground.terrainData.alphamapResolution];
+        if (text == null)
+        {
+        }
+        else
+        {
+
+        }
+        return mask;
+    }
 
     private void LoadMask()
     {
