@@ -21,11 +21,19 @@ public class CameraBehaviour : MonoBehaviour
         angles.x %= 360;
         if(angles.x > 180)
             angles.x -= 360;
+        angles.y %= 360;
+        if (angles.y > 180)
+            angles.y -= 360;
 
         if (angles.x > 45)
             angles.x = 45;
         else if (angles.x < -15)
             angles.x = -15;
+
+        if (angles.y > 25)
+            angles.y = 25;
+        else if (angles.y < -25)
+            angles.y = -25;
 
         cameraParent.localEulerAngles = angles;
     }
