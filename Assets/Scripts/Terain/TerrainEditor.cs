@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using System.Text;
 using UnityEngine;
 
@@ -27,7 +28,7 @@ public class TerrainEditor : MonoBehaviour
     {
         var text = Resources.Load<TextAsset>(SavedMask);
         float[,] mask = new float[ground.terrainData.alphamapResolution, ground.terrainData.alphamapResolution];
-        if (text != null)
+        if (text != null && text.ToString() != "")
         {
             var table = text.ToString().Split('\n');
             for(int i=0;i<table.Length;i++)
@@ -44,7 +45,7 @@ public class TerrainEditor : MonoBehaviour
     {
         var text = Resources.Load<TextAsset>(SavedHeights);
         float[,] heights = new float[ground.terrainData.heightmapResolution, ground.terrainData.heightmapResolution];
-        if (text != null)
+        if (text != null && text.ToString() != "")
         {
             var table = text.ToString().Split('\n');
             for (int i = 0; i < table.Length; i++)
@@ -60,7 +61,7 @@ public class TerrainEditor : MonoBehaviour
     {
         var text = Resources.Load<TextAsset>(SavedTextures);
         float[,,] textures = new float[ground.terrainData.alphamapResolution, ground.terrainData.alphamapResolution, ground.terrainData.terrainLayers.Length];
-        if (text != null)
+        if (text != null && text.ToString() != "")
         {
             var table = text.ToString().Split('\n');
             for (int i = 0; i < table.Length; i++)
@@ -83,6 +84,8 @@ public class TerrainEditor : MonoBehaviour
             mask = LoadMask(terainToEdit.ground);
         if (heights == null)
             heights = LoadHeights(terainToEdit.ground);
+        if (textures == null)
+            textures = LoadTextures(terainToEdit.ground);
     }
 
     private void GetMask()
@@ -116,11 +119,42 @@ public class TerrainEditor : MonoBehaviour
                 strBuilder.Append(mask[i, j]);
             }
         }
+        File.WriteAllText("./Assets/Resources/" + SavedMask + ".txt", strBuilder.ToString());
     }
 
     private void SaveDataToFile()
     {
-
+        var strBuilder = new StringBuilder();
+        for (int i = 0; i < heights.GetLength(0); i++)
+        {
+            if (i != 0)
+                strBuilder.Append('\n');
+            for (int j = 0; j < heights.GetLength(1); j++)
+            {
+                if (j != 0)
+                    strBuilder.Append(' ');
+                strBuilder.Append(heights[i, j]);
+            }
+        }
+        File.WriteAllText("./Assets/Resources/" + SavedHeights + ".txt", strBuilder.ToString());
+        strBuilder = new StringBuilder();
+        for (int i = 0; i < textures.GetLength(0); i++)
+        {
+            if (i != 0)
+                strBuilder.Append('\n');
+            for (int j = 0; j < textures.GetLength(1); j++)
+            {
+                if (j != 0)
+                    strBuilder.Append(' ');
+                for (int k = 0; k < textures.GetLength(2); k++)
+                {
+                    if (k != 0)
+                        strBuilder.Append(',');
+                    strBuilder.Append(textures[i, j, k]);
+                }    
+            }
+        }
+        File.WriteAllText("./Assets/Resources/" + SavedHeights + ".txt", strBuilder.ToString());
     }
 
     private void SetUpTerrain()
@@ -190,11 +224,13 @@ public class TerrainEditor : MonoBehaviour
         if(SaveMask)
         {
             GetMask();
+            SaveMaskToFile();
             SaveMask = false;
         }
         if(SaveData)
         {
             GetData();
+            SaveDataToFile();
             SaveData = false;
         }
 

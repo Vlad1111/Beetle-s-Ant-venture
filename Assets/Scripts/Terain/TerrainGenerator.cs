@@ -119,10 +119,6 @@ public class TerrainGenerator : MonoBehaviour
                 {
                     float xx = x * layer.scale;
                     float yy = y * layer.scale;
-                    if (i == 10 && j == 10)
-                    {
-                        Debug.Log(xx + " " + yy);
-                    }
                     xx += layer.offset.x;
                     yy += layer.offset.y;
                     val += Mathf.PerlinNoise(xx, yy) * layer.height;
