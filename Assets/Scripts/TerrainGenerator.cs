@@ -37,6 +37,8 @@ public class TerrainGenerator : MonoBehaviour
 
     private void DistroyAllChildrentForParent(Transform parent)
     {
+        if (parent == null)
+            return;
         if (Application.platform == RuntimePlatform.WindowsEditor)
             while (parent.childCount > 0)
                 DestroyImmediate(parent.GetChild(0).gameObject);
@@ -132,38 +134,44 @@ public class TerrainGenerator : MonoBehaviour
         ground.terrainData.SetHeights(0, 0, heights);
         ground.terrainData.SetAlphamaps(0, 0, textures);
 
-        for (int i = 0; i < 5; i++)
-            for (int j = 0; j < 5; j++)
-            {
-                var newW = Instantiate(waterPrefab, watersParent);
-                newW.localPosition = new Vector3(i * 100, 0, j * 100);
-            }
+        if(watersParent)
+        {
+            for (int i = 0; i < 5; i++)
+                for (int j = 0; j < 5; j++)
+                {
+                    var newW = Instantiate(waterPrefab, watersParent);
+                    newW.localPosition = new Vector3(i * 100, 0, j * 100);
+                }
+        }
 
-        var scale = 500f / ground.terrainData.heightmapResolution;
-        int onceEvery = 3;
-        for (int i = 0; i < size.x; i += 6)
-            for (int j = 0; j < size.y; j += 6)
-            {
-                int ii = i + (int)Random.Range(-onceEvery, onceEvery);
-                int jj = j + (int)Random.Range(-onceEvery, onceEvery);
-                if (ii < 0 || ii >= size.x)
-                    continue;
-                if (jj < 0 || jj >= size.y)
-                    continue;
-                var posibility = Mathf.Abs(safeTerrain[jj, ii]) + Mathf.Abs(unsafeTerrain[jj, ii]);
-                if (posibility > seeLevel)
-                    continue;
-                int inx = Random.Range(0, plantsPrefabs.Length - 1);
-                var trans = Instantiate(plantsPrefabs[inx], plantsParent);
+        if(plantsParent != null)
+        {
+            var scale = 500f / ground.terrainData.heightmapResolution;
+            int onceEvery = 3;
+            for (int i = 0; i < size.x; i += 6)
+                for (int j = 0; j < size.y; j += 6)
+                {
+                    int ii = i + (int)Random.Range(-onceEvery, onceEvery);
+                    int jj = j + (int)Random.Range(-onceEvery, onceEvery);
+                    if (ii < 0 || ii >= size.x)
+                        continue;
+                    if (jj < 0 || jj >= size.y)
+                        continue;
+                    var posibility = Mathf.Abs(safeTerrain[jj, ii]) + Mathf.Abs(unsafeTerrain[jj, ii]);
+                    if (posibility > seeLevel)
+                        continue;
+                    int inx = Random.Range(0, plantsPrefabs.Length - 1);
+                    var trans = Instantiate(plantsPrefabs[inx], plantsParent);
 
-                trans.localPosition = new Vector3(ii * scale, heights[jj, ii] * ground.terrainData.heightmapScale.y, jj * scale);
-                trans.localPosition += new Vector3(Random.value - 0.5f, 0, Random.value - 0.5f);
-                trans.localEulerAngles = new Vector3(Random.Range(-5, 5), Random.Range(0, 360), Random.Range(-5, 5));
-                trans.localScale = new Vector3(
-                                        trans.localScale.x * Random.Range(0.8f, 1.5f),
-                                        trans.localScale.y * Random.Range(0.6f, 2),
-                                        trans.localScale.z * Random.Range(0.8f, 1.5f));
-            }
+                    trans.localPosition = new Vector3(ii * scale, heights[jj, ii] * ground.terrainData.heightmapScale.y, jj * scale);
+                    trans.localPosition += new Vector3(Random.value - 0.5f, 0, Random.value - 0.5f);
+                    trans.localEulerAngles = new Vector3(Random.Range(-5, 5), Random.Range(0, 360), Random.Range(-5, 5));
+                    trans.localScale = new Vector3(
+                                            trans.localScale.x * Random.Range(0.8f, 1.5f),
+                                            trans.localScale.y * Random.Range(0.6f, 2),
+                                            trans.localScale.z * Random.Range(0.8f, 1.5f));
+                }
+        }
     }
 
     void Update()
