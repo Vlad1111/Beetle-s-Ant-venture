@@ -27,7 +27,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1273538034799969034}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: -5, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -111,36 +111,36 @@ MonoBehaviour:
   ground: {fileID: 2825006296781003901}
   seeLevel: 0.045
   detailsLayers:
-  - offset: {x: 18.764463, y: 1.2767556}
+  - offset: {x: 54.17436, y: 82.73468}
     scale: 10
-    height: 0.1
+    height: 0.2
     power: 1
-  - offset: {x: 43.56641, y: 6.893886}
+  - offset: {x: 83.1832, y: 44.27413}
     scale: 10
-    height: 0.01
+    height: -0.05
     power: 1
-  - offset: {x: 1.1941555, y: 73.25498}
+  - offset: {x: 34.22972, y: 40.278645}
     scale: 50
     height: 0.01
     power: 1
-  - offset: {x: 72.305565, y: 26.679352}
+  - offset: {x: 88.61353, y: 85.41474}
     scale: 100
     height: 0.005
     power: 1
-  - offset: {x: 5.030204, y: 56.449528}
+  - offset: {x: 61.784786, y: 1.8201473}
     scale: 1000
     height: 0.001
     power: 1
   safeZoneLayers:
-  - offset: {x: 85.00771, y: 94.3251}
+  - offset: {x: 83.37222, y: 53.70286}
     scale: 10
     height: 0
     power: 20
   roadLayers:
-  - offset: {x: 54.48515, y: 96.98832}
+  - offset: {x: 68.9468, y: 81.05611}
     scale: 10
-    height: 8
-    power: 15
+    height: 7
+    power: 3
   watersParent: {fileID: 0}
   waterPrefab: {fileID: 7749030010379864757, guid: b1565b4a844012f43b978afd28e8ebe6,
     type: 3}

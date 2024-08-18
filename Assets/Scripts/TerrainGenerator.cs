@@ -77,7 +77,7 @@ public class TerrainGenerator : MonoBehaviour
                     val2 = 1 - Mathf.Pow(Mathf.Abs(val2 - 0.5f) * layer.height, layer.power);
                     val = Mathf.Max(val, val2);
                 }
-                safeTerrain[i, j] = Mathf.Min(val, seeLevel * 2f);
+                safeTerrain[i, j] = val * seeLevel * 1.2f;
             }
     }
 
@@ -114,7 +114,7 @@ public class TerrainGenerator : MonoBehaviour
                     yy += layer.offset.y;
                     val += Mathf.PerlinNoise(xx, yy) * layer.height;
                 }
-                heights[i, j] = Mathf.Max(val, safeTerrain[i, j] - val / 2);
+                heights[i, j] = Mathf.Max(val, safeTerrain[i, j]);
             }
         for (int i = 0; i < size.x && i < textures.GetLength(0); i++)
             for (int j = 0; j < size.y && j < textures.GetLength(1); j++)
@@ -158,7 +158,7 @@ public class TerrainGenerator : MonoBehaviour
                     if (jj < 0 || jj >= size.y)
                         continue;
                     var posibility = Mathf.Abs(safeTerrain[jj, ii]) + Mathf.Abs(unsafeTerrain[jj, ii]);
-                    if (posibility > seeLevel)
+                    if (posibility > seeLevel / 2)
                         continue;
                     int inx = Random.Range(0, plantsPrefabs.Length - 1);
                     var trans = Instantiate(plantsPrefabs[inx], plantsParent);

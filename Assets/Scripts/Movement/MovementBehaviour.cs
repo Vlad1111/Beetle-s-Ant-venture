@@ -14,8 +14,6 @@ public class MovementBehaviour : MonoBehaviour
     public Transform bodyMeshesParent;
     public TerrainPointDetection bodyTerrainCollider;
 
-    public Transform debugObject;
-
     private Vector2 movement;
 
     void Start()
