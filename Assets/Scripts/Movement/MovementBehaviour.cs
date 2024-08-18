@@ -46,8 +46,6 @@ public class MovementBehaviour : MonoBehaviour
         //    rb.constraints = RigidbodyConstraints.FreezeRotation;
         //}
 
-        if (rb.velocity.y < 0)
-            rb.velocity += new Vector3(0, rb.velocity.y, 0) * Time.deltaTime;
 
         Vector3 desiredBodyAngles = Vector3.zero;
         if(bodyTerrainCollider.raycasHit != null)
@@ -57,6 +55,8 @@ public class MovementBehaviour : MonoBehaviour
             var newAngles = new Vector3(Mathf.Asin(pointN.z), 0, -Mathf.Asin(pointN.x));
             desiredBodyAngles = newAngles * Mathf.Rad2Deg;
         }
+        else if (rb.velocity.y < 0)
+            rb.velocity += new Vector3(0, rb.velocity.y, 0) * Time.deltaTime;
         bodyMeshesParent.localRotation = Quaternion.Lerp(bodyMeshesParent.localRotation, Quaternion.Euler(desiredBodyAngles), 2 * Time.deltaTime);
         //bodyMeshesParent.Rotate(desiredAxes, transform.localEulerAngles.y);
     }

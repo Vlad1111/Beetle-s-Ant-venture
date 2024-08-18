@@ -208,6 +208,7 @@ Material:
     - _IridescenceThickness: 1
     - _LinkDetailsWithBase: 1
     - _MaterialID: 1
+    - _Max_deep: 13.86
     - _Metallic: 0
     - _MetallicRemapMax: 1
     - _MetallicRemapMin: 0
@@ -276,7 +277,7 @@ Material:
     - _BaseColor: {r: 0, g: 0.0816164, b: 1, a: 1}
     - _BaseColorMap_MipInfo: {r: 0, g: 0, b: 0, a: 0}
     - _Color: {r: 0.13585791, g: 0.40566033, b: 0.34162113, a: 0.11372549}
-    - _Deep_color: {r: 0.132387, g: 0.15518555, b: 0.16037738, a: 0.8666667}
+    - _Deep_color: {r: 0.1981132, g: 0.15807939, b: 0.1504539, a: 0.39607844}
     - _DiffusionProfileAsset: {r: 0, g: 0, b: 0, a: 0}
     - _DoubleSidedConstants: {r: 1, g: 1, b: -1, a: 0}
     - _EmissionColor: {r: 1, g: 1, b: 1, a: 1}
@@ -284,7 +285,7 @@ Material:
     - _EmissiveColorLDR: {r: 0, g: 0, b: 0, a: 1}
     - _InvPrimScale: {r: 1, g: 1, b: 0, a: 0}
     - _IridescenceThicknessRemap: {r: 0, g: 1, b: 0, a: 0}
-    - _Shallow_Color: {r: 0.33962262, g: 0.20711769, b: 0.10092559, a: 0}
+    - _Shallow_Color: {r: 0, g: 0, b: 0, a: 0}
     - _SpecularColor: {r: 1, g: 1, b: 1, a: 1}
     - _ThicknessRemap: {r: 0, g: 1, b: 0, a: 0}
     - _TransmittanceColor: {r: 1, g: 1, b: 1, a: 1}

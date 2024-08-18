@@ -100,7 +100,6 @@ MonoBehaviour:
   rotationSpeed: 100
   bodyMeshesParent: {fileID: 136779044045316218}
   bodyTerrainCollider: {fileID: 4211845921770416319}
-  debugObject: {fileID: 0}
 --- !u!114 &7270574622923781884
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -131,7 +130,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cameraParent: {fileID: 818631465092888813}
-  sensitibility: {x: 1, y: 1}
+  sensitibility: {x: 100, y: -100}
 --- !u!1 &1417914820736322523
 GameObject:
   m_ObjectHideFlags: 0
