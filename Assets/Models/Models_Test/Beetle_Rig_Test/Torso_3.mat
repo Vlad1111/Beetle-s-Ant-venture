@@ -9,7 +9,7 @@ Material:
   m_PrefabAsset: {fileID: 0}
   m_Name: Torso_3
   m_Shader: {fileID: 4800000, guid: 6e4ae4064600d784cac1e41a9e6f2e59, type: 3}
-  m_Parent: {fileID: 2100000, guid: 15c2d0e2cd384cf4aa1039a6673b3b10, type: 2}
+  m_Parent: {fileID: 2100000, guid: 003896852e2e4a941a0b7a41f47940e9, type: 2}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords:
   - _DISABLE_SSR_TRANSPARENT
