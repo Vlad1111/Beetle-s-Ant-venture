@@ -296,6 +296,7 @@ public class TerrainGenerator : MonoBehaviour
 
                 var trans = Instantiate(stickPrefab, sticksParent);
                 trans.localPosition = new Vector3(i * scale, heights[j, i] * ground.terrainData.heightmapScale.y + 10, j * scale);
+                trans.gameObject.name = "Stick";
             }
         }
     }
