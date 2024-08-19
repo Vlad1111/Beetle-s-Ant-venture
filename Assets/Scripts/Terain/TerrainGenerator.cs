@@ -233,7 +233,7 @@ public class TerrainGenerator : MonoBehaviour
                             continue;
                         if (jj < 0 || jj >= size.y)
                             continue;
-                        var posibility = Mathf.Abs(safeTerrain[jj, ii]) + Mathf.Abs(unsafeTerrain[jj, ii]) + premadeMask[i, j] * seeLevel * 2;
+                        var posibility = Mathf.Abs(safeTerrain[jj, ii]) + Mathf.Abs(unsafeTerrain[jj, ii]) + premadeMask[j, i] * seeLevel * 2;
                         if (posibility > seeLevel / 2)
                         {
                             continue;
@@ -280,11 +280,11 @@ public class TerrainGenerator : MonoBehaviour
                 int count = 50;
                 do
                 {
-                    var posibility = Mathf.Abs(safeTerrain[j, i]) + Mathf.Abs(unsafeTerrain[j, i]) + premadeMask[i, j] * seeLevel * 2;
+                    var posibility = Mathf.Abs(safeTerrain[j, i]) + Mathf.Abs(unsafeTerrain[j, i]) + premadeMask[j, i] * seeLevel * 2;
                     if (posibility > seeLevel / 2)
                     {
                         count--;
-                        if (safeTerrain[j, i] > premadeMask[i, j])
+                        if (safeTerrain[j, i] > premadeMask[j, i])
                             break;
                     }
                     i = Random.Range(20, size.x - 21);

@@ -1,0 +1,88 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &2866360649370563828
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3472276516414024037}
+  - component: {fileID: 6867201241621543020}
+  m_Layer: 0
+  m_Name: Sound Manager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3472276516414024037
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2866360649370563828}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 204.31651, y: 13.243293, z: 163.74815}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &6867201241621543020
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2866360649370563828}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dec2ae3d8eab2eb43aaa00f9c4ec4385, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  startingBackgroundMusic: {fileID: 8300000, guid: c1fb9b9abc4d4e8488a41fbfcd220f4c,
+    type: 3}
+  clips:
+  - name: Bird
+    clips:
+    - {fileID: 8300000, guid: 0bb9b4748d4a15d4cbb3a669a0b278d4, type: 3}
+    - {fileID: 8300000, guid: b1f49703a6923ba48b624651d45603e9, type: 3}
+    - {fileID: 8300000, guid: c85087ca2580769439d5fa2bb2bd074a, type: 3}
+    - {fileID: 8300000, guid: aba3aa77d8c16ce43a510bb782223f35, type: 3}
+    - {fileID: 8300000, guid: cb570862beb5cf744ba1d20a9887120a, type: 3}
+    - {fileID: 8300000, guid: 38eecbc84a1b9cc4a93924b8552f915d, type: 3}
+    - {fileID: 8300000, guid: 5b1e16932c27b03458e2788df7e3dd3d, type: 3}
+    - {fileID: 8300000, guid: 2c6840038eb5135498806f81ec0d6a3e, type: 3}
+    - {fileID: 8300000, guid: 24c2f7f58588d0b46a9c43f329e8dbc8, type: 3}
+    source: {fileID: 0}
+    volume: {x: 0.05, y: 0.5}
+    pitch: {x: 0.8, y: 1.2}
+    playAfterLastTimeSlice: 1
+    isItLoop: 0
+    startAfterSeconds: 0
+  - name: Ambient
+    clips:
+    - {fileID: 8300000, guid: fb5c5f9cc4646cf4691922f59c78db2a, type: 3}
+    - {fileID: 8300000, guid: 320b3a343593e3848b40761625a7e18f, type: 3}
+    - {fileID: 8300000, guid: 6fb6b023cd7950f4f93d671dc582f410, type: 3}
+    - {fileID: 8300000, guid: 25f1c6d48785a454f8d675b45e7e88d0, type: 3}
+    - {fileID: 8300000, guid: 4b8650de248987e4abea1a60169e5d1f, type: 3}
+    source: {fileID: 0}
+    volume: {x: 0.2, y: 0.5}
+    pitch: {x: 0.8, y: 1.2}
+    playAfterLastTimeSlice: 1
+    isItLoop: 0
+    startAfterSeconds: 0
+  - name: Walk
+    clips:
+    - {fileID: 8300000, guid: c9c2d0a461216434b8b6420d1f40fe40, type: 3}
+    source: {fileID: 0}
+    volume: {x: 0.2, y: 0.5}
+    pitch: {x: 6, y: 7}
+    playAfterLastTimeSlice: 1
+    isItLoop: 0
+    startAfterSeconds: 0

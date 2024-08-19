@@ -14,7 +14,10 @@ public class GameBehaviour : MonoBehaviour
     public PlayerControll player;
     public Transform playerSpwnPoint;
 
-    //private bool wasGenerated = false;
+    private float timeBeforeBirds = 10;
+    private float timeBirds = 0;
+
+    private float timeBeforeAmbient = 20;
 
     private void Start()
     {
@@ -34,12 +37,38 @@ public class GameBehaviour : MonoBehaviour
         GoToSpwnPoint();
     }
 
-   // private void Update()
-   // {
-   //     if(!wasGenerated)
-   //     {
-   //         wasGenerated = true;
-   //         terrainGenerator.Generate();
-   //     }
-   // }
+
+
+   private void Update()
+   {
+        if(timeBirds > 0)
+        {
+            timeBirds -= Time.deltaTime;
+            timeBeforeBirds -= timeBirds;
+            if(timeBeforeBirds < 0)
+            {
+                SoundManager.PlaySfxClip("Bird");
+                timeBeforeBirds = Random.Range(0.2f, 1);
+            }
+            if(timeBirds < 0)
+            {
+                timeBeforeBirds = Random.Range(10, 120);
+            }
+        }
+        else
+        {
+            timeBeforeBirds -= Time.deltaTime;
+            if(timeBeforeBirds < 0)
+            {
+                timeBirds = Random.Range(10, 30);
+            }
+        }
+
+        timeBeforeAmbient -= Time.deltaTime;
+        if(timeBeforeAmbient < 0)
+        {
+            SoundManager.PlaySfxClip("Ambient");
+            timeBeforeAmbient = Random.Range(30, 360);
+        }
+   }
 }

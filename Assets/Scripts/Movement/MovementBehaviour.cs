@@ -11,6 +11,8 @@ public class MovementBehaviour : MonoBehaviour
     public float underwaterSpeed;
     public float rotationSpeed;
     public float jumpPower;
+    public float timeBetweenStepSounds = 0.1f;
+    private float _timeBetweenStepSounds;
 
     public Transform bodyMeshesParent;
     public TerrainPointDetection bodyTerrainCollider;
@@ -27,6 +29,7 @@ public class MovementBehaviour : MonoBehaviour
     void Start()
     {
         curentBreathing = breathTime;
+        _timeBetweenStepSounds = timeBetweenStepSounds;
     }
 
     public void SetMovementInput(Vector2 movement)
@@ -76,7 +79,18 @@ public class MovementBehaviour : MonoBehaviour
         var horizontalSpeed = new Vector3(rb.velocity.x, 0, rb.velocity.z).magnitude;
 
         if (Mathf.Abs(movement.x) > 0)
+        {
             rb.velocity += transform.forward * movement.x * speed * (maxSpeed - horizontalSpeed) * Time.deltaTime;
+            if (distanceToGround < 1)
+            {
+                _timeBetweenStepSounds -= Time.deltaTime;
+                if(_timeBetweenStepSounds < 0)
+                {
+                    _timeBetweenStepSounds = timeBetweenStepSounds;
+                    SoundManager.PlaySfxClip("Walk");
+                }
+            }
+        }
         else rb.velocity -= new Vector3(rb.velocity.x, 0, rb.velocity.z) * breackPower * Time.deltaTime;
         transform.localEulerAngles += new Vector3(0, rotationSpeed * movement.y * Time.deltaTime, 0);
 
