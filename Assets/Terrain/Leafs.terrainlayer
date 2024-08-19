@@ -6,7 +6,7 @@ TerrainLayer:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: NewLayer
+  m_Name: Leafs
   m_DiffuseTexture: {fileID: 2800000, guid: 9785c77883dbe28409f0ffb3ff9b84ed, type: 3}
   m_NormalMapTexture: {fileID: 2800000, guid: 8689b90c90657d7468e05edaeb24e092, type: 3}
   m_MaskMapTexture: {fileID: 0}
@@ -15,7 +15,7 @@ TerrainLayer:
   m_Specular: {r: 0, g: 0, b: 0, a: 0}
   m_Metallic: 0.139
   m_Smoothness: 0.135
-  m_NormalScale: 3
+  m_NormalScale: 3.2
   m_DiffuseRemapMin: {x: 0, y: 0, z: 0, w: 0}
   m_DiffuseRemapMax: {x: 1, y: 1, z: 1, w: 1}
   m_MaskMapRemapMin: {x: 0, y: 0, z: 0, w: 0}

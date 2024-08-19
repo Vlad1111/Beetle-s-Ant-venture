@@ -22,11 +22,6 @@ public class TerrainGenerator : MonoBehaviour
         public Vector3 minScale;
         public Vector3 maxScale;
     }
-
-    void Start()
-    {
-        Generate();
-    }
     public bool generate = false;
     public bool destroy = false;
     public Terrain ground;
@@ -38,6 +33,8 @@ public class TerrainGenerator : MonoBehaviour
     public Transform waterPrefab;
     public Transform plantsParent;
     public PlantPrefabs[] plantsPrefabs;
+    public Transform sticksParent;
+    public Transform stickPrefab;
 
     private float[,] heights;
     private float[,] safeTerrain;
@@ -47,6 +44,11 @@ public class TerrainGenerator : MonoBehaviour
     private float[,] premadeMask;
     private float[,] premadeHeights;
     private float[,,] premadeTextures;
+
+    void Start()
+    {
+        Generate();
+    }
 
     private void DistroyAllChildrentForParent(Transform parent)
     {
@@ -62,6 +64,7 @@ public class TerrainGenerator : MonoBehaviour
     {
         DistroyAllChildrentForParent(watersParent);
         DistroyAllChildrentForParent(plantsParent);
+        DistroyAllChildrentForParent(sticksParent);
     }
 
     public void GenerateWater()
@@ -106,9 +109,32 @@ public class TerrainGenerator : MonoBehaviour
                 safeTerrain[i, j] = val * seeLevel * 1.2f;
             }
     }
+    private void GenerateUnSafeZones(Vector2Int size)
+    {
+        for (int i = 0; i < size.x; i++)
+            for (int j = 0; j < size.y; j++)
+            {
+                float x = (float)i / size.x;
+                float y = (float)j / size.y;
+                float val = 0;
+                foreach (var layer in roadLayers)
+                {
+                    layer.offset = new Vector2(Random.value * 100, Random.value * 100);
+                    float xx = x * layer.scale;
+                    float yy = y * layer.scale;
+                    xx += layer.offset.x;
+                    yy += layer.offset.y;
+                    var val2 = Mathf.PerlinNoise(xx, yy);
+                    val2 = 1 - Mathf.Pow(Mathf.Abs(val2 - 0.5f) * layer.height, layer.power);
+                    val = Mathf.Max(val, val2);
+                }
+                unsafeTerrain[i, j] = val * seeLevel * 1.2f;
+            }
+    }
 
     public void Generate(bool generateAll = true)
     {
+        Debug.Log("Generate terrain");
         RemoveAlreadyGeneratedElements();
         heights = new float[ground.terrainData.heightmapResolution, ground.terrainData.heightmapResolution];
         safeTerrain = new float[ground.terrainData.heightmapResolution, ground.terrainData.heightmapResolution];
@@ -129,6 +155,7 @@ public class TerrainGenerator : MonoBehaviour
             layer.offset = new Vector2(Random.value * 100, Random.value * 100);
 
         GenerateSafeZones(size);
+        GenerateUnSafeZones(size);
         for (int i = 0; i < size.x; i++)
             for (int j = 0; j < size.y; j++)
             {
@@ -150,6 +177,7 @@ public class TerrainGenerator : MonoBehaviour
                 heights[i, j] = Mathf.Lerp(val, premadeHeights[i, j], mask);
                 //heights[i, j] = Mathf.Max(val, safeTerrain[i, j]);
             }
+        int calcDistance = 10;
         for (int i = 0; i < size.x && i < textures.GetLength(0); i++)
             for (int j = 0; j < size.y && j < textures.GetLength(1); j++)
             {
@@ -160,9 +188,25 @@ public class TerrainGenerator : MonoBehaviour
                     val = 1;
                 else if (val < 0)
                     val = 0;
-                textures[i, j, 0] = (1 - safe) * val;
-                textures[i, j, 1] = (1 - safe) * (1 - val);
-                textures[i, j, 2] = safe;
+
+                float isPeack = 0;
+                if (i >= calcDistance && i < textures.GetLength(0) - calcDistance)
+                    if (j >= calcDistance && j < textures.GetLength(1) - calcDistance)
+                    {
+                        var d = heights[i, j] * 4 -
+                            heights[i - calcDistance, j] -
+                            heights[i + calcDistance, j] -
+                            heights[i, j - calcDistance] -
+                            heights[i, j + calcDistance];
+                        isPeack = 100 * d * heights[i, j];
+                        if (isPeack > 1)
+                            isPeack = 1;
+                    }
+
+                textures[i, j, 0] = (1 - isPeack) * (1 - safe) * val;
+                textures[i, j, 1] = (1 - isPeack) * (1 - safe) * (1 - val);
+                textures[i, j, 2] = (1 - isPeack) * safe;
+                textures[i, j, 3] = isPeack;
             }
 
         ground.terrainData.SetHeights(0, 0, heights);
@@ -172,9 +216,9 @@ public class TerrainGenerator : MonoBehaviour
         {
             GenerateWater();
 
+            var scale = 500f / ground.terrainData.heightmapResolution;
             if (plantsParent != null)
             {
-                var scale = 500f / ground.terrainData.heightmapResolution;
                 int onceEvery = 3;
 
                 int propProbability = 0;
@@ -189,33 +233,69 @@ public class TerrainGenerator : MonoBehaviour
                             continue;
                         if (jj < 0 || jj >= size.y)
                             continue;
-                        var posibility = Mathf.Abs(safeTerrain[jj, ii]) + Mathf.Abs(unsafeTerrain[jj, ii]) + premadeMask[i,j] * seeLevel * 2;
+                        var posibility = Mathf.Abs(safeTerrain[jj, ii]) + Mathf.Abs(unsafeTerrain[jj, ii]) + premadeMask[i, j] * seeLevel * 2;
                         if (posibility > seeLevel / 2)
-                            continue;
-                        int randVal = Random.Range(0, propProbability);
-                        int inx = -1;
-                        for (int k = 0; k < plantsPrefabs.Length; k++)
                         {
-                            randVal -= plantsPrefabs[k].probability;
-                            if (randVal < 0)
+                            continue;
+                        }
+                        else
+                        {
+                            int randVal = Random.Range(0, propProbability);
+                            int inx = -1;
+                            for (int k = 0; k < plantsPrefabs.Length; k++)
                             {
-                                inx = k;
-                                break;
+                                randVal -= plantsPrefabs[k].probability;
+                                if (randVal < 0)
+                                {
+                                    inx = k;
+                                    break;
+                                }
+                            }
+                            if (inx == -1)
+                                inx = plantsPrefabs.Length - 1;
+                            var plant = plantsPrefabs[inx];
+                            int count = 1;
+                            if (inx == 0)
+                                count = 3;
+                            for (int _ = 0; _ < count; _++)
+                            {
+                                var trans = Instantiate(plant.prefab, plantsParent);
+
+                                trans.localPosition = new Vector3(ii * scale, heights[jj, ii] * ground.terrainData.heightmapScale.y, jj * scale);
+                                trans.localPosition += new Vector3(Random.value - 0.5f, 0, Random.value - 0.5f);
+                                trans.localEulerAngles = new Vector3(Random.Range(-5, 5), Random.Range(0, 360), Random.Range(-5, 5));
+                                trans.localScale = new Vector3(
+                                                        trans.localScale.x * Random.Range(plant.minScale.x, plant.maxScale.x),
+                                                        trans.localScale.y * Random.Range(plant.minScale.y, plant.maxScale.y),
+                                                        trans.localScale.z * Random.Range(plant.minScale.z, plant.maxScale.z));
                             }
                         }
-                        if (inx == -1)
-                            inx = plantsPrefabs.Length - 1;
-                        var plant = plantsPrefabs[inx];
-                        var trans = Instantiate(plant.prefab, plantsParent);
-
-                        trans.localPosition = new Vector3(ii * scale, heights[jj, ii] * ground.terrainData.heightmapScale.y, jj * scale);
-                        trans.localPosition += new Vector3(Random.value - 0.5f, 0, Random.value - 0.5f);
-                        trans.localEulerAngles = new Vector3(Random.Range(-5, 5), Random.Range(0, 360), Random.Range(-5, 5));
-                        trans.localScale = new Vector3(
-                                                trans.localScale.x * Random.Range(plant.minScale.x, plant.maxScale.x),
-                                                trans.localScale.y * Random.Range(plant.minScale.y, plant.maxScale.y),
-                                                trans.localScale.z * Random.Range(plant.minScale.z, plant.maxScale.z));
                     }
+            }
+
+            for (int _ = 0; _ < 6; _++)
+            {
+                int i = Random.Range(0, size.x - 1);
+                int j = Random.Range(0, size.y - 1);
+                int count = 50;
+                do
+                {
+                    var posibility = Mathf.Abs(safeTerrain[j, i]) + Mathf.Abs(unsafeTerrain[j, i]) + premadeMask[i, j] * seeLevel * 2;
+                    if (posibility > seeLevel / 2)
+                    {
+                        count--;
+                        if (safeTerrain[j, i] > premadeMask[i, j])
+                            break;
+                    }
+                    i = Random.Range(20, size.x - 21);
+                    j = Random.Range(20, size.y - 21);
+                    if (count == 0)
+                        break;
+                } while (true);
+
+
+                var trans = Instantiate(stickPrefab, sticksParent);
+                trans.localPosition = new Vector3(i * scale, heights[j, i] * ground.terrainData.heightmapScale.y + 10, j * scale);
             }
         }
     }

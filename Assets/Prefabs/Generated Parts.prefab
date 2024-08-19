@@ -1,5 +1,36 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &1218795068677885801
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5279421963135774695}
+  m_Layer: 0
+  m_Name: Sticks
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5279421963135774695
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1218795068677885801}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1776454273223745301}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1681861787755934989
 GameObject:
   m_ObjectHideFlags: 0
@@ -111,33 +142,33 @@ MonoBehaviour:
   ground: {fileID: 1983357397559870955}
   seeLevel: 0.045
   detailsLayers:
-  - offset: {x: 92.42018, y: 6.540931}
+  - offset: {x: 16.965904, y: 35.079826}
     scale: 10
     height: 0.2
     power: 1
-  - offset: {x: 22.864405, y: 23.07016}
+  - offset: {x: 61.5189, y: 57.445724}
     scale: 10
     height: -0.05
     power: 1
-  - offset: {x: 15.727999, y: 5.6467066}
+  - offset: {x: 88.34312, y: 94.7796}
     scale: 50
     height: 0.01
     power: 1
-  - offset: {x: 51.100464, y: 77.18201}
+  - offset: {x: 95.604645, y: 65.36468}
     scale: 100
     height: 0.005
     power: 1
-  - offset: {x: 31.579998, y: 66.07949}
+  - offset: {x: 10.045828, y: 28.050056}
     scale: 1000
     height: 0.001
     power: 1
   safeZoneLayers:
-  - offset: {x: 37.609463, y: 95.88077}
+  - offset: {x: 69.12671, y: 40.467304}
     scale: 10
     height: 0
     power: 20
   roadLayers:
-  - offset: {x: 57.46656, y: 11.423256}
+  - offset: {x: 35.55403, y: 43.23595}
     scale: 10
     height: 7
     power: 3
@@ -171,6 +202,9 @@ MonoBehaviour:
     probability: 2
     minScale: {x: 0.1, y: 0.1, z: 0.1}
     maxScale: {x: 0.5, y: 0.5, z: 0.5}
+  sticksParent: {fileID: 5279421963135774695}
+  stickPrefab: {fileID: 423989000592212144, guid: 41ba5c651a954e848a884d31a81c8263,
+    type: 3}
 --- !u!1 &6483686793032680983
 GameObject:
   m_ObjectHideFlags: 0
@@ -233,6 +267,7 @@ Transform:
   m_Children:
   - {fileID: 7260215845791845666}
   - {fileID: 4861012358676859523}
+  - {fileID: 5279421963135774695}
   - {fileID: 8842645812851524582}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
