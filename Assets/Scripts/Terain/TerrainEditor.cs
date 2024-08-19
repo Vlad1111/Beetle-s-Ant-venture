@@ -9,10 +9,12 @@ public class TerrainEditor : MonoBehaviour
 {
     public TerrainGenerator terainToEdit;
     public bool EditTerain = false;
-    public bool SaveMask = false;
-    public bool SaveData = false;
+    [Space(20)]
     public bool ShowMask = false;
     public bool ShowData = false;
+    [Space(20)]
+    public bool SaveMask = false;
+    public bool SaveData = false;
 
     private bool lastEditTerain = false;
 
@@ -52,7 +54,16 @@ public class TerrainEditor : MonoBehaviour
             {
                 var line = table[i].Split(' ');
                 for (int j = 0; j < line.Length; j++)
-                    heights[i, j] = float.Parse(line[j]);
+                {
+                    try
+                    {
+                        heights[i, j] = float.Parse(line[j]);
+                    }
+                    catch
+                    {
+                        Debug.LogError("Some problem with string: " + line[j]);
+                    }
+                }
             }
         }
         return heights;
@@ -88,20 +99,23 @@ public class TerrainEditor : MonoBehaviour
             textures = LoadTextures(terainToEdit.ground);
     }
 
-    private void GetMask()
+    private float GetMask()
     {
+        var sum = 0f;
         var allTextuer = terainToEdit.ground.terrainData.GetAlphamaps(0, 0, mask.GetLength(0), mask.GetLength(1));
         for (int i = 0; i < mask.GetLength(0); i++)
             for (int j = 0; j < mask.GetLength(1); j++)
             {
                 mask[i, j] = allTextuer[i, j, MaskIndex];
+                sum += mask[i, j];
             }
+        return sum;
     }
 
     private void GetData()
     {
-        heights = terainToEdit.ground.terrainData.GetHeights(0, 0, heights.GetLength(0), heights.GetLength(1));
-        var allTextuer = terainToEdit.ground.terrainData.GetAlphamaps(0, 0, mask.GetLength(0), mask.GetLength(1));
+        heights = terainToEdit.ground.terrainData.GetHeights(0, 0, terainToEdit.ground.terrainData.heightmapResolution, terainToEdit.ground.terrainData.heightmapResolution);
+        var allTextuer = terainToEdit.ground.terrainData.GetAlphamaps(0, 0, terainToEdit.ground.terrainData.alphamapResolution, terainToEdit.ground.terrainData.alphamapResolution);
         textures = allTextuer;
     }
 
@@ -120,6 +134,7 @@ public class TerrainEditor : MonoBehaviour
             }
         }
         File.WriteAllText("./Assets/Resources/" + SavedMask + ".txt", strBuilder.ToString());
+        Debug.Log("Mask saved");
     }
 
     private void SaveDataToFile()
@@ -146,6 +161,8 @@ public class TerrainEditor : MonoBehaviour
             {
                 if (j != 0)
                     strBuilder.Append(' ');
+                textures[i, j, 0] += textures[i, j, MaskIndex];
+                textures[i, j, MaskIndex] = 0;
                 for (int k = 0; k < textures.GetLength(2); k++)
                 {
                     if (k != 0)
@@ -154,7 +171,8 @@ public class TerrainEditor : MonoBehaviour
                 }    
             }
         }
-        File.WriteAllText("./Assets/Resources/" + SavedHeights + ".txt", strBuilder.ToString());
+        File.WriteAllText("./Assets/Resources/" + SavedTextures + ".txt", strBuilder.ToString());
+        Debug.Log("Data saved");
     }
 
     private void SetUpTerrain()
@@ -183,24 +201,17 @@ public class TerrainEditor : MonoBehaviour
     }
     private void ShowDataOnground()
     {
-        float[,,] textures = new float[terainToEdit.ground.terrainData.alphamapResolution, terainToEdit.ground.terrainData.alphamapResolution, terainToEdit.ground.terrainData.terrainLayers.Length];
         float[,] heights = new float[terainToEdit.ground.terrainData.heightmapResolution, terainToEdit.ground.terrainData.heightmapResolution];
 
         for (int i = 0; i < mask.GetLength(0); i++)
             for (int j = 0; j < mask.GetLength(1); j++)
             {
                 var v = mask[i, j];
-                heights[i, j] = this.heights[i, j] * v;
-                for (int k = 0; k < this.textures.GetLength(2); k++)
-                {
-                    if (k == MaskIndex)
-                        textures[i, j, k] = v;
-                    else textures[i, j, k] = this.textures[i, j, k] * v;
-                }
+                heights[i, j] = Mathf.Lerp(heights[i, j], this.heights[i, j], v);
             }
 
         terainToEdit.ground.terrainData.SetHeights(0, 0, heights);
-        terainToEdit.ground.terrainData.SetAlphamaps(0, 0, textures);
+        terainToEdit.ground.terrainData.SetAlphamaps(0, 0, this.textures);
     }
 
     void Update()
@@ -210,6 +221,7 @@ public class TerrainEditor : MonoBehaviour
             if(!lastEditTerain)
             {
                 SetUpTerrain();
+                Debug.Log("Editing starting");
             }
         }
         else
@@ -217,14 +229,17 @@ public class TerrainEditor : MonoBehaviour
             if (lastEditTerain)
             {
                 RemakeTerrain();
+                Debug.Log("Editing stoped");
             }
         }
         lastEditTerain = EditTerain;
 
         if(SaveMask)
         {
-            GetMask();
-            SaveMaskToFile();
+            var sum = GetMask();
+            if (sum < 10)
+                Debug.LogError("Mask is too small. something is not right");
+            else SaveMaskToFile();
             SaveMask = false;
         }
         if(SaveData)
@@ -238,11 +253,13 @@ public class TerrainEditor : MonoBehaviour
         {
             ShowMaskOnground();
             ShowMask = false;
+            Debug.Log("Mask shown");
         }
         if (ShowData)
         {
             ShowDataOnground();
             ShowData = false;
+            Debug.Log("data shown");
         }
     }
 }

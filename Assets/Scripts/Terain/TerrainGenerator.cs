@@ -35,6 +35,10 @@ public class TerrainGenerator : MonoBehaviour
     private float[,] unsafeTerrain;
     private float[,,] textures;
 
+    private float[,] premadeMask;
+    private float[,] premadeHeights;
+    private float[,,] premadeTextures;
+
     private void DistroyAllChildrentForParent(Transform parent)
     {
         if (parent == null)
@@ -101,17 +105,27 @@ public class TerrainGenerator : MonoBehaviour
         safeTerrain = new float[ground.terrainData.heightmapResolution, ground.terrainData.heightmapResolution];
         unsafeTerrain = new float[ground.terrainData.heightmapResolution, ground.terrainData.heightmapResolution];
         textures = new float[ground.terrainData.alphamapResolution, ground.terrainData.alphamapResolution, ground.terrainData.terrainLayers.Length];
+
+        premadeMask = TerrainEditor.LoadMask(ground);
+        premadeHeights = TerrainEditor.LoadHeights(ground);
+        premadeTextures = TerrainEditor.LoadTextures(ground);
+
         Vector2Int size = new Vector2Int(heights.GetLength(0), heights.GetLength(1));
+
         foreach (var layer in detailsLayers)
             layer.offset = new Vector2(Random.value * 100, Random.value * 100);
         foreach (var layer in safeZoneLayers)
             layer.offset = new Vector2(Random.value * 100, Random.value * 100);
         foreach (var layer in roadLayers)
             layer.offset = new Vector2(Random.value * 100, Random.value * 100);
+
         GenerateSafeZones(size);
         for (int i = 0; i < size.x; i++)
             for (int j = 0; j < size.y; j++)
             {
+                var mask = 1f;
+                if (i < premadeMask.GetLength(0) && j < premadeMask.GetLength(0))
+                    mask = premadeMask[i, j];
                 float x = (float)i / size.x;
                 float y = (float)j / size.y;
                 float val = 0;
@@ -123,7 +137,9 @@ public class TerrainGenerator : MonoBehaviour
                     yy += layer.offset.y;
                     val += Mathf.PerlinNoise(xx, yy) * layer.height;
                 }
-                heights[i, j] = Mathf.Max(val, safeTerrain[i, j]);
+                val = Mathf.Max(val, safeTerrain[i, j]);
+                heights[i, j] = Mathf.Lerp(val, premadeHeights[i, j], mask);
+                //heights[i, j] = Mathf.Max(val, safeTerrain[i, j]);
             }
         for (int i = 0; i < size.x && i < textures.GetLength(0); i++)
             for (int j = 0; j < size.y && j < textures.GetLength(1); j++)
@@ -151,8 +167,8 @@ public class TerrainGenerator : MonoBehaviour
             {
                 var scale = 500f / ground.terrainData.heightmapResolution;
                 int onceEvery = 3;
-                for (int i = 0; i < size.x; i += 6)
-                    for (int j = 0; j < size.y; j += 6)
+                for (int i = 0; i < size.x - 1; i += 6)
+                    for (int j = 0; j < size.y - 1; j += 6)
                     {
                         int ii = i + (int)Random.Range(-onceEvery, onceEvery);
                         int jj = j + (int)Random.Range(-onceEvery, onceEvery);
@@ -160,7 +176,7 @@ public class TerrainGenerator : MonoBehaviour
                             continue;
                         if (jj < 0 || jj >= size.y)
                             continue;
-                        var posibility = Mathf.Abs(safeTerrain[jj, ii]) + Mathf.Abs(unsafeTerrain[jj, ii]);
+                        var posibility = Mathf.Abs(safeTerrain[jj, ii]) + Mathf.Abs(unsafeTerrain[jj, ii]) + premadeMask[i,j] * seeLevel * 2;
                         if (posibility > seeLevel / 2)
                             continue;
                         int inx = Random.Range(0, plantsPrefabs.Length - 1);
