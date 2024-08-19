@@ -111,33 +111,33 @@ MonoBehaviour:
   ground: {fileID: 1983357397559870955}
   seeLevel: 0.045
   detailsLayers:
-  - offset: {x: 75.11785, y: 2.8417115}
+  - offset: {x: 92.42018, y: 6.540931}
     scale: 10
     height: 0.2
     power: 1
-  - offset: {x: 53.553135, y: 40.420063}
+  - offset: {x: 22.864405, y: 23.07016}
     scale: 10
     height: -0.05
     power: 1
-  - offset: {x: 38.03479, y: 56.16918}
+  - offset: {x: 15.727999, y: 5.6467066}
     scale: 50
     height: 0.01
     power: 1
-  - offset: {x: 8.257795, y: 12.24326}
+  - offset: {x: 51.100464, y: 77.18201}
     scale: 100
     height: 0.005
     power: 1
-  - offset: {x: 69.66596, y: 95.33728}
+  - offset: {x: 31.579998, y: 66.07949}
     scale: 1000
     height: 0.001
     power: 1
   safeZoneLayers:
-  - offset: {x: 43.601543, y: 68.62679}
+  - offset: {x: 37.609463, y: 95.88077}
     scale: 10
     height: 0
     power: 20
   roadLayers:
-  - offset: {x: 91.79634, y: 3.668714}
+  - offset: {x: 57.46656, y: 11.423256}
     scale: 10
     height: 7
     power: 3
@@ -146,7 +146,31 @@ MonoBehaviour:
     type: 3}
   plantsParent: {fileID: 7260215845791845666}
   plantsPrefabs:
-  - {fileID: 3486080715925805517, guid: 741fc78e4c0af384d9c4c67167c25aa0, type: 3}
+  - prefab: {fileID: 3486080715925805517, guid: 741fc78e4c0af384d9c4c67167c25aa0,
+      type: 3}
+    probability: 100
+    minScale: {x: 0.8, y: 0.8, z: 0.8}
+    maxScale: {x: 2, y: 1.6, z: 2}
+  - prefab: {fileID: 6932072551308289550, guid: b22abe5fdd32259498ead0cef3e9f9ce,
+      type: 3}
+    probability: 1
+    minScale: {x: 0.8, y: 0.8, z: 0.8}
+    maxScale: {x: 1.2, y: 1.6, z: 1.2}
+  - prefab: {fileID: 1477153610092603304, guid: 2293be1019aae5c4da6f066ec78c1d8e,
+      type: 3}
+    probability: 1
+    minScale: {x: 0.8, y: 0.8, z: 0.8}
+    maxScale: {x: 1.2, y: 1.6, z: 1.2}
+  - prefab: {fileID: 6853429428649108359, guid: 0cd789c13aaf92a40a1adb8986c03761,
+      type: 3}
+    probability: 2
+    minScale: {x: 0.1, y: 0.1, z: 0.1}
+    maxScale: {x: 0.5, y: 0.5, z: 0.5}
+  - prefab: {fileID: 3235547568470784949, guid: 8debef5ce21c3294e9ed2b486533260c,
+      type: 3}
+    probability: 2
+    minScale: {x: 0.1, y: 0.1, z: 0.1}
+    maxScale: {x: 0.5, y: 0.5, z: 0.5}
 --- !u!1 &6483686793032680983
 GameObject:
   m_ObjectHideFlags: 0

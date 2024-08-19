@@ -14,6 +14,15 @@ public class TerrainGenerator : MonoBehaviour
         public float power = 1;
     }
 
+    [System.Serializable]
+    public class PlantPrefabs
+    {
+        public Transform prefab;
+        public int probability;
+        public Vector3 minScale;
+        public Vector3 maxScale;
+    }
+
     void Start()
     {
         Generate();
@@ -28,7 +37,7 @@ public class TerrainGenerator : MonoBehaviour
     public Transform watersParent;
     public Transform waterPrefab;
     public Transform plantsParent;
-    public Transform[] plantsPrefabs;
+    public PlantPrefabs[] plantsPrefabs;
 
     private float[,] heights;
     private float[,] safeTerrain;
@@ -167,6 +176,10 @@ public class TerrainGenerator : MonoBehaviour
             {
                 var scale = 500f / ground.terrainData.heightmapResolution;
                 int onceEvery = 3;
+
+                int propProbability = 0;
+                foreach (var pref in plantsPrefabs)
+                    propProbability += pref.probability;
                 for (int i = 0; i < size.x - 1; i += 6)
                     for (int j = 0; j < size.y - 1; j += 6)
                     {
@@ -179,16 +192,29 @@ public class TerrainGenerator : MonoBehaviour
                         var posibility = Mathf.Abs(safeTerrain[jj, ii]) + Mathf.Abs(unsafeTerrain[jj, ii]) + premadeMask[i,j] * seeLevel * 2;
                         if (posibility > seeLevel / 2)
                             continue;
-                        int inx = Random.Range(0, plantsPrefabs.Length - 1);
-                        var trans = Instantiate(plantsPrefabs[inx], plantsParent);
+                        int randVal = Random.Range(0, propProbability);
+                        int inx = -1;
+                        for (int k = 0; k < plantsPrefabs.Length; k++)
+                        {
+                            randVal -= plantsPrefabs[k].probability;
+                            if (randVal < 0)
+                            {
+                                inx = k;
+                                break;
+                            }
+                        }
+                        if (inx == -1)
+                            inx = plantsPrefabs.Length - 1;
+                        var plant = plantsPrefabs[inx];
+                        var trans = Instantiate(plant.prefab, plantsParent);
 
                         trans.localPosition = new Vector3(ii * scale, heights[jj, ii] * ground.terrainData.heightmapScale.y, jj * scale);
                         trans.localPosition += new Vector3(Random.value - 0.5f, 0, Random.value - 0.5f);
                         trans.localEulerAngles = new Vector3(Random.Range(-5, 5), Random.Range(0, 360), Random.Range(-5, 5));
                         trans.localScale = new Vector3(
-                                                trans.localScale.x * Random.Range(0.8f, 1.5f),
-                                                trans.localScale.y * Random.Range(0.6f, 2),
-                                                trans.localScale.z * Random.Range(0.8f, 1.5f));
+                                                trans.localScale.x * Random.Range(plant.minScale.x, plant.maxScale.x),
+                                                trans.localScale.y * Random.Range(plant.minScale.y, plant.maxScale.y),
+                                                trans.localScale.z * Random.Range(plant.minScale.z, plant.maxScale.z));
                     }
             }
         }
