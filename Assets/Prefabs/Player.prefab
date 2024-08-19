@@ -47,7 +47,7 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 697152424395721086}
   serializedVersion: 4
-  m_Mass: 1
+  m_Mass: 10
   m_Drag: 1
   m_AngularDrag: 0.05
   m_CenterOfMass: {x: 0, y: 0, z: 0}
@@ -94,11 +94,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rb: {fileID: 167144811148004188}
-  maxSpeed: 20
+  maxSpeed: 15
   baseSpeed: 20
   breackPower: 20
   underwaterSpeed: 5
   rotationSpeed: 100
+  jumpPower: 50
   bodyMeshesParent: {fileID: 136779044045316218}
   bodyTerrainCollider: {fileID: 4211845921770416319}
   feetTerrainCollider:
@@ -5333,8 +5334,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1, y: 0.35, z: 0.9379034}
-  m_Center: {x: 0, y: -0.06, z: -0.33415747}
+  m_Size: {x: 1, y: 0.5474932, z: 0.9379034}
+  m_Center: {x: 0.0000000027596947, y: -0.1587466, z: -0.33415747}
 --- !u!114 &5703662864234382833
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5504,7 +5505,7 @@ Transform:
   m_GameObject: {fileID: 3901153478832402370}
   serializedVersion: 2
   m_LocalRotation: {x: 0.7071068, y: -0, z: -0, w: 0.7071068}
-  m_LocalPosition: {x: 0, y: -0.5050001, z: 0}
+  m_LocalPosition: {x: 0, y: -0.557, z: 0}
   m_LocalScale: {x: 0.3017301, y: 1.2231531, z: 0.30172992}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -5522,7 +5523,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 75ab501a00dd9364e8bd5ac241e5bb8d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  distance: 1.15
+  distance: 1.5
   layerMask:
     serializedVersion: 2
     m_Bits: 64

@@ -14,11 +14,12 @@ public class GameBehaviour : MonoBehaviour
     public PlayerControll player;
     public Transform playerSpwnPoint;
 
-    private bool wasGenerated = false;
+    //private bool wasGenerated = false;
 
     private void Start()
     {
         GoToSpwnPoint();
+        //terrainGenerator.Generate();
     }
 
     public void GoToSpwnPoint()

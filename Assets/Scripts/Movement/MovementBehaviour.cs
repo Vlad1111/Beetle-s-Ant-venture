@@ -10,6 +10,7 @@ public class MovementBehaviour : MonoBehaviour
     public float breackPower;
     public float underwaterSpeed;
     public float rotationSpeed;
+    public float jumpPower;
 
     public Transform bodyMeshesParent;
     public TerrainPointDetection bodyTerrainCollider;
@@ -21,6 +22,7 @@ public class MovementBehaviour : MonoBehaviour
     public Transform breathBubbles;
 
     private Vector2 movement;
+    private float jump;
 
     void Start()
     {
@@ -32,16 +34,45 @@ public class MovementBehaviour : MonoBehaviour
         this.movement = movement;
     }
 
+    public void JumpPower(float jump)
+    {
+        this.jump = jump;
+    }
+
     void Update()
     {
         float submergedFeel = 0;
-        foreach(var f in feetTerrainCollider)
-            if(f && f.raycasHit != null)
-                if(f.raycasHit.Value.point.y <= 0)
+        foreach (var f in feetTerrainCollider)
+            if (f && f.raycasHit != null)
+                if (f.raycasHit.Value.point.y <= 0)
                     submergedFeel++;
         submergedFeel /= feetTerrainCollider.Length;
-        float speed = Mathf.Lerp(baseSpeed, underwaterSpeed, submergedFeel);
-        float maxSpeed = Mathf.Lerp(this.maxSpeed, speed, submergedFeel);
+
+        float distanceToGround;
+        Vector3 desiredBodyAngles = Vector3.zero;
+        if (bodyTerrainCollider.raycasHit != null)
+        {
+            var terrainRay = bodyTerrainCollider.raycasHit.Value;
+            var pointN = Quaternion.AngleAxis(-transform.localEulerAngles.y, Vector3.up) * terrainRay.normal;
+            var newAngles = new Vector3(Mathf.Asin(pointN.z), 0, -Mathf.Asin(pointN.x));
+            desiredBodyAngles = newAngles * Mathf.Rad2Deg;
+
+            distanceToGround = (bodyTerrainCollider.transform.position - terrainRay.point).magnitude / bodyTerrainCollider.distance;
+
+            if (jump > 0)
+                rb.velocity += (1 - submergedFeel) * Vector3.up * jumpPower * Time.deltaTime;
+        }
+        else
+        {
+            if (rb.velocity.y < 0)
+                rb.velocity += 2 * Physics.gravity * Time.deltaTime;
+            distanceToGround = 1;
+        }
+        bodyMeshesParent.localRotation = Quaternion.Lerp(bodyMeshesParent.localRotation, Quaternion.Euler(desiredBodyAngles), 2 * Time.deltaTime);
+        //bodyMeshesParent.Rotate(desiredAxes, transform.localEulerAngles.y);
+
+        float speed = Mathf.Lerp(baseSpeed, underwaterSpeed, submergedFeel + distanceToGround / 2);
+        float maxSpeed = Mathf.Lerp(this.maxSpeed, speed, submergedFeel + distanceToGround / 2);
         var horizontalSpeed = new Vector3(rb.velocity.x, 0, rb.velocity.z).magnitude;
 
         if (Mathf.Abs(movement.x) > 0)
@@ -49,31 +80,7 @@ public class MovementBehaviour : MonoBehaviour
         else rb.velocity -= new Vector3(rb.velocity.x, 0, rb.velocity.z) * breackPower * Time.deltaTime;
         transform.localEulerAngles += new Vector3(0, rotationSpeed * movement.y * Time.deltaTime, 0);
 
-        //if(Mathf.Abs(movement.y) > 0)
-        //{
-        //    rb.angularVelocity += new Vector3(0, rotationSpeed * movement.y * Time.deltaTime, 0);
-        //    rb.constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationZ;
-        //}
-        //else
-        //{
-        //    rb.constraints = RigidbodyConstraints.FreezeRotation;
-        //}
-
-
-        Vector3 desiredBodyAngles = Vector3.zero;
-        if(bodyTerrainCollider.raycasHit != null)
-        {
-            var terrainRay = bodyTerrainCollider.raycasHit.Value;
-            var pointN = Quaternion.AngleAxis(-transform.localEulerAngles.y, Vector3.up) * terrainRay.normal;
-            var newAngles = new Vector3(Mathf.Asin(pointN.z), 0, -Mathf.Asin(pointN.x));
-            desiredBodyAngles = newAngles * Mathf.Rad2Deg;
-        }
-        else if (rb.velocity.y < 0)
-            rb.velocity += new Vector3(0, rb.velocity.y, 0) * Time.deltaTime;
-        bodyMeshesParent.localRotation = Quaternion.Lerp(bodyMeshesParent.localRotation, Quaternion.Euler(desiredBodyAngles), 2 * Time.deltaTime);
-        //bodyMeshesParent.Rotate(desiredAxes, transform.localEulerAngles.y);
-
-        if(breathingPosition.position.y <= 0)
+        if (breathingPosition.position.y <= 0)
         {
             curentBreathing -= Time.deltaTime;
             breathBubbles.gameObject.SetActive(true);

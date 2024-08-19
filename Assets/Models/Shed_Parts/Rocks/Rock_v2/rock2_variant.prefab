@@ -88,11 +88,31 @@ PrefabInstance:
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 2100000, guid: ad2e3914773170e49a05aadb3f0cb94f, type: 2}
+    - target: {fileID: -3559945096296766091, guid: 4541754de302ecc4bbbae54846eedfc2,
+        type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: -1046850673598094049, guid: 4541754de302ecc4bbbae54846eedfc2,
+        type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 4541754de302ecc4bbbae54846eedfc2,
         type: 3}
       propertyPath: m_Name
       value: rock2_variant
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 4541754de302ecc4bbbae54846eedfc2,
+        type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 4541754de302ecc4bbbae54846eedfc2,
+        type: 3}
+      propertyPath: m_TagString
+      value: Terrain
+      objectReference: {fileID: 0}
     - target: {fileID: 1060702170247916077, guid: 4541754de302ecc4bbbae54846eedfc2,
         type: 3}
       propertyPath: m_LocalScale.x
@@ -132,6 +152,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_ConstrainProportionsScale
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4342490408231724816, guid: 4541754de302ecc4bbbae54846eedfc2,
+        type: 3}
+      propertyPath: m_Layer
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 5531772379157118530, guid: 4541754de302ecc4bbbae54846eedfc2,
         type: 3}

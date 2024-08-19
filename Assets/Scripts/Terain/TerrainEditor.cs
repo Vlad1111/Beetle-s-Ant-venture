@@ -8,6 +8,12 @@ using UnityEngine;
 [ExecuteInEditMode]
 public class TerrainEditor : MonoBehaviour
 {
+    private void Awake()
+    {
+        if (Application.isPlaying)
+            Destroy(this);
+    }
+
     public TerrainGenerator terainToEdit;
     public bool EditTerain = false;
     public bool ForceLoadData = false;
