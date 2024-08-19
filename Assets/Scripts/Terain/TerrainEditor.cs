@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Text;
 using UnityEngine;
@@ -9,6 +10,7 @@ public class TerrainEditor : MonoBehaviour
 {
     public TerrainGenerator terainToEdit;
     public bool EditTerain = false;
+    public bool ForceLoadData = false;
     [Space(20)]
     public bool ShowMask = false;
     public bool ShowData = false;
@@ -26,6 +28,13 @@ public class TerrainEditor : MonoBehaviour
     private const string SavedTextures = "TerrainTextures";
     private const int MaskIndex = 2;
 
+    private static float Parse(string text)
+    {
+        text = text.Replace(',', '.');
+        float.TryParse(text, NumberStyles.Any, CultureInfo.InvariantCulture, out float value);
+        return value;
+    }
+
     public static float[,] LoadMask(Terrain ground)
     {
         var text = Resources.Load<TextAsset>(SavedMask);
@@ -37,7 +46,7 @@ public class TerrainEditor : MonoBehaviour
             {
                 var line = table[i].Split(' ');
                 for (int j = 0; j < line.Length; j++)
-                    mask[i, j] = float.Parse(line[j]);
+                    mask[i, j] = Parse(line[j]);
             }
         }
         else Debug.Log("SavedMask not found");
@@ -58,7 +67,7 @@ public class TerrainEditor : MonoBehaviour
                 {
                     try
                     {
-                        heights[i, j] = float.Parse(line[j]);
+                        heights[i, j] = Parse(line[j]);
                     }
                     catch
                     {
@@ -84,7 +93,7 @@ public class TerrainEditor : MonoBehaviour
                 {
                     var colum = line[j].Split(',');
                     for (int k = 0; k < colum.Length; k++)
-                        textures[i, j, k] = float.Parse(colum[k]);
+                        textures[i, j, k] = Parse(colum[k]);
                 }
             }
         }
@@ -92,13 +101,13 @@ public class TerrainEditor : MonoBehaviour
         return textures;
     }
 
-    private void LoadData()
+    private void LoadData(bool forceLoad = false)
     {
-        if(mask == null)
+        if(mask == null || forceLoad)
             mask = LoadMask(terainToEdit.ground);
-        if (heights == null)
+        if (heights == null || forceLoad)
             heights = LoadHeights(terainToEdit.ground);
-        if (textures == null)
+        if (textures == null || forceLoad)
             textures = LoadTextures(terainToEdit.ground);
     }
 
@@ -263,6 +272,14 @@ public class TerrainEditor : MonoBehaviour
             ShowDataOnground();
             ShowData = false;
             Debug.Log("data shown");
+        }
+
+        if(ForceLoadData)
+        {
+            LoadData(true);
+            if(EditTerain)
+                SetUpTerrain();
+            ForceLoadData = false;
         }
     }
 }
