@@ -33,13 +33,14 @@ public class TerrainEditor : MonoBehaviour
         if (text != null && text.ToString() != "")
         {
             var table = text.ToString().Split('\n');
-            for(int i=0;i<table.Length;i++)
+            for (int i = 0; i < table.Length; i++)
             {
                 var line = table[i].Split(' ');
-                for(int j=0;j<line.Length;j++)
-                    mask[i,j] = float.Parse(line[j]);
+                for (int j = 0; j < line.Length; j++)
+                    mask[i, j] = float.Parse(line[j]);
             }
         }
+        else Debug.Log("SavedMask not found");
         return mask;
     }
 
@@ -66,6 +67,7 @@ public class TerrainEditor : MonoBehaviour
                 }
             }
         }
+        else Debug.Log("SavedHeights not found");
         return heights;
     }
     public static float[,,] LoadTextures(Terrain ground)
@@ -86,6 +88,7 @@ public class TerrainEditor : MonoBehaviour
                 }
             }
         }
+        else Debug.Log("SavedTextures not found");
         return textures;
     }
 
