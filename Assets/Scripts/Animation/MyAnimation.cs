@@ -32,7 +32,7 @@ public class MyAnimation : MonoBehaviour
         animate = true;
     }
 
-    void Update()
+    void LateUpdate()
     {
         if(animate)
         {

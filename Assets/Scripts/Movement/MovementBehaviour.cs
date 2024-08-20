@@ -23,6 +23,10 @@ public class MovementBehaviour : MonoBehaviour
     public Transform breathBar;
     public Transform breathBubbles;
 
+    public Animator animator;
+    public MyAnimationCollection auxAnimation;
+    private float timeUntillAuxAnimation;
+
     private Vector2 movement;
     private float jump;
 
@@ -44,6 +48,13 @@ public class MovementBehaviour : MonoBehaviour
 
     void Update()
     {
+        timeUntillAuxAnimation -= Time.deltaTime;
+        if(timeUntillAuxAnimation < 0)
+        {
+            timeUntillAuxAnimation = Random.Range(5, 360);
+            foreach(var anim in auxAnimation.animations)
+                anim.Play();        
+        }
         float submergedFeel = 0;
         foreach (var f in feetTerrainCollider)
             if (f && f.raycasHit != null)
@@ -78,6 +89,7 @@ public class MovementBehaviour : MonoBehaviour
         float maxSpeed = Mathf.Lerp(this.maxSpeed, speed, submergedFeel + distanceToGround / 2);
         var horizontalSpeed = new Vector3(rb.velocity.x, 0, rb.velocity.z).magnitude;
 
+        animator.SetFloat("Speed", movement.x + Mathf.Abs(movement.y));
         if (Mathf.Abs(movement.x) > 0)
         {
             rb.velocity += transform.forward * movement.x * speed * (maxSpeed - horizontalSpeed) * Time.deltaTime;
@@ -98,6 +110,7 @@ public class MovementBehaviour : MonoBehaviour
         {
             curentBreathing -= Time.deltaTime;
             breathBubbles.gameObject.SetActive(true);
+            SoundManager.PlaySfxClip("Bubble");
             if(curentBreathing < 0)
             {
                 curentBreathing = 0;

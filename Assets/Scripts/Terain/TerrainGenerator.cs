@@ -273,7 +273,7 @@ public class TerrainGenerator : MonoBehaviour
                     }
             }
 
-            for (int _ = 0; _ < 6; _++)
+            for (int _ = 0; _ < 4; _++)
             {
                 int i = Random.Range(0, size.x - 1);
                 int j = Random.Range(0, size.y - 1);

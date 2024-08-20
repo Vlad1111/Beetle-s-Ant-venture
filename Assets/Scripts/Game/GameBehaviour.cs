@@ -22,7 +22,8 @@ public class GameBehaviour : MonoBehaviour
     private void Start()
     {
         GoToSpwnPoint();
-        //terrainGenerator.Generate();
+        timeBeforeBirds = Random.Range(10, 120);
+        timeBeforeAmbient = Random.Range(30, 360);
     }
 
     public void GoToSpwnPoint()

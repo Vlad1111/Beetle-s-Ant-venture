@@ -142,33 +142,33 @@ MonoBehaviour:
   ground: {fileID: 1983357397559870955}
   seeLevel: 0.045
   detailsLayers:
-  - offset: {x: 72.0867, y: 99.29873}
+  - offset: {x: 66.642746, y: 95.74169}
     scale: 10
     height: 0.2
     power: 1
-  - offset: {x: 93.46168, y: 52.944202}
+  - offset: {x: 27.888193, y: 71.50322}
     scale: 10
     height: -0.05
     power: 1
-  - offset: {x: 69.60891, y: 56.68401}
+  - offset: {x: 81.3336, y: 82.88393}
     scale: 50
     height: 0.01
     power: 1
-  - offset: {x: 36.25491, y: 30.684021}
+  - offset: {x: 32.132046, y: 84.177124}
     scale: 100
     height: 0.005
     power: 1
-  - offset: {x: 77.56183, y: 49.831303}
+  - offset: {x: 76.27138, y: 3.3633952}
     scale: 1000
     height: 0.001
     power: 1
   safeZoneLayers:
-  - offset: {x: 24.031511, y: 81.11185}
+  - offset: {x: 96.38769, y: 8.593846}
     scale: 10
     height: 0
     power: 20
   roadLayers:
-  - offset: {x: 83.06868, y: 59.786816}
+  - offset: {x: 28.687338, y: 26.990858}
     scale: 10
     height: 7
     power: 3

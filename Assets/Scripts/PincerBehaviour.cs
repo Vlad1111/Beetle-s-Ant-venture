@@ -10,6 +10,9 @@ public class PincerBehaviour : MonoBehaviour
     public float massMultiplayer;
     public float breakingForce;
 
+    public MyAnimationCollection closeAnimation;
+    public MyAnimationCollection openAnimation;
+
     private SpringJoint joint;
     private float force;
     public void SetPincerForce(float value)
@@ -17,14 +20,17 @@ public class PincerBehaviour : MonoBehaviour
         force = value;
     }
 
-
     private bool hasPinced = true;
+    private bool hasClosed = false;
     void Update()
     {
         if (force > 0)
         {
             if (hasPinced == false)
             {
+                foreach (var anim in closeAnimation.animations)
+                    anim.Play();
+                hasClosed = true;
                 if (stickDetector.otherCollider != null)
                 {
                     var rb = stickDetector.otherCollider.GetComponent<Rigidbody>();
@@ -50,5 +56,13 @@ public class PincerBehaviour : MonoBehaviour
                 hasPinced = false;
             }
         }
+
+        if (joint == null && hasClosed)
+            if (closeAnimation.animations.Length > 0 && !closeAnimation.animations[0].animate)
+            {
+                foreach (var anim in openAnimation.animations)
+                    anim.Play();
+                hasClosed = false;
+            }
     }
 }

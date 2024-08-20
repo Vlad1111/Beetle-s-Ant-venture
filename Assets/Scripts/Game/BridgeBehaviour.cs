@@ -17,9 +17,11 @@ public class BridgeBehaviour : MonoBehaviour
             {
                 bridgeParts[curentIndex].gameObject.SetActive(true);
                 curentIndex++;
+                SoundManager.PlaySfxClip("Place");
                 if (curentIndex == bridgeParts.Length)
                 {
                     curentIndex++;
+                    SoundManager.PlaySfxClip("Bell");
                     onFinishAnimation.Play();
                 }
             }

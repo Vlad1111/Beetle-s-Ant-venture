@@ -2,10 +2,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-/*
- * music credits:
- */
-
 public class SoundManager : MonoBehaviour
 {
     public static SoundManager Instance { get; private set; }
@@ -62,7 +58,8 @@ public class SoundManager : MonoBehaviour
         }
     }
 
-    public AudioClip startingBackgroundMusic;
+    public AudioClip[] backgroundMusic;
+    public float musicVolume = 0.1f;
     public SfxClips[] clips;
 
     private float fadingValue = -1;
@@ -75,8 +72,8 @@ public class SoundManager : MonoBehaviour
     {
         if (Instance != null)
         {
-            Instance.PlayMusic(startingBackgroundMusic);
-            Instance.startingBackgroundMusic = startingBackgroundMusic;
+            Instance.PlayMusic(backgroundMusic[Random.Range(0, backgroundMusic.Length)]);
+            Instance.backgroundMusic = backgroundMusic;
             Destroy(gameObject);
             return;
         }
@@ -88,10 +85,10 @@ public class SoundManager : MonoBehaviour
     {
         backgroundMusicSource1 = gameObject.AddComponent<AudioSource>();
         backgroundMusicSource2 = gameObject.AddComponent<AudioSource>();
-        backgroundMusicSource1.loop = true;
-        backgroundMusicSource2.loop = true;
+        backgroundMusicSource1.loop = false;
+        backgroundMusicSource2.loop = false;
         RecalculateMusicVolume();
-        if (startingBackgroundMusic)
+        if (backgroundMusic.Length > 0)
             PlayStartingBackgroundMusic();
 
         foreach(var clip in clips)
@@ -116,12 +113,15 @@ public class SoundManager : MonoBehaviour
             }
             else
             {
-                backgroundMusicSource1.volume = fadingValue;// *
+                backgroundMusicSource1.volume = fadingValue * musicVolume;// *
                                                             //SettingMenuUI.setting.masterVolume * SettingMenuUI.setting.musicVolume;
-                backgroundMusicSource2.volume = (1 - fadingValue);// *
+                backgroundMusicSource2.volume = (1 - fadingValue) * musicVolume;// *
                                                                   //SettingMenuUI.setting.masterVolume * SettingMenuUI.setting.musicVolume;
             }
         }
+
+        if (!backgroundMusicSource1.isPlaying && !backgroundMusicSource2.isPlaying)
+            PlayStartingBackgroundMusic();
     }
 
     public void RecalculateMusicVolume()
@@ -162,7 +162,7 @@ public class SoundManager : MonoBehaviour
 
     public void PlayStartingBackgroundMusic()
     {
-        PlayMusic(startingBackgroundMusic);
+        PlayMusic(backgroundMusic[Random.Range(0, backgroundMusic.Length)]);
     }
 
     public static void PlaySfxClip(string clipName)
