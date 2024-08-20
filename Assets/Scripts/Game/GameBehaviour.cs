@@ -21,6 +21,7 @@ public class GameBehaviour : MonoBehaviour
 
     private void Start()
     {
+        Cursor.visible = false;
         GoToSpwnPoint();
         timeBeforeBirds = Random.Range(10, 120);
         timeBeforeAmbient = Random.Range(30, 360);
