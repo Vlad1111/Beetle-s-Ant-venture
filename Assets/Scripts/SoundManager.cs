@@ -22,7 +22,7 @@ public class SoundManager : MonoBehaviour
         {
             var vol = volumeMultiplyer * (volume.x + Random.value * (volume.y - volume.x));
             var pit = pitchMultiplyer * (pitch.x + Random.value * (pitch.y - pitch.x));
-            source.volume = vol;// * SettingMenuUI.setting.masterVolume * SettingMenuUI.setting.sfxVolume;
+            source.volume = vol * SettingBehaviour.settings.masterVolume * SettingBehaviour.settings.sfxVolume;
             source.pitch = pit;
             source.clip = clips[Random.Range(0, clips.Length)];// Extensions.PickRandom(clips);
         }
@@ -113,10 +113,10 @@ public class SoundManager : MonoBehaviour
             }
             else
             {
-                backgroundMusicSource1.volume = fadingValue * musicVolume;// *
-                                                            //SettingMenuUI.setting.masterVolume * SettingMenuUI.setting.musicVolume;
-                backgroundMusicSource2.volume = (1 - fadingValue) * musicVolume;// *
-                                                                  //SettingMenuUI.setting.masterVolume * SettingMenuUI.setting.musicVolume;
+                backgroundMusicSource1.volume = fadingValue * musicVolume *
+                                                            SettingBehaviour.settings.masterVolume * SettingBehaviour.settings.musicVolume;
+                backgroundMusicSource2.volume = (1 - fadingValue) * musicVolume *
+                                                                  SettingBehaviour.settings.masterVolume * SettingBehaviour.settings.musicVolume;
             }
         }
 
@@ -128,10 +128,10 @@ public class SoundManager : MonoBehaviour
     {
         if (fadingValue > 0)
             return;
-        //if (SettingMenuUI.setting == null)
-        //    return;
-        //backgroundMusicSource1.volume = SettingMenuUI.setting.masterVolume * SettingMenuUI.setting.musicVolume;
-        //backgroundMusicSource2.volume = SettingMenuUI.setting.masterVolume * SettingMenuUI.setting.musicVolume;
+        if (SettingBehaviour.settings == null)
+            return;
+        backgroundMusicSource1.volume = musicVolume * SettingBehaviour.settings.masterVolume * SettingBehaviour.settings.musicVolume;
+        backgroundMusicSource2.volume = musicVolume * SettingBehaviour.settings.masterVolume * SettingBehaviour.settings.musicVolume;
     }
 
     private void PlayMusic(AudioClip music)

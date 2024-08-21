@@ -21,7 +21,6 @@ public class GameBehaviour : MonoBehaviour
 
     private void Start()
     {
-        Cursor.visible = false;
         GoToSpwnPoint();
         timeBeforeBirds = Random.Range(10, 120);
         timeBeforeAmbient = Random.Range(30, 360);
@@ -39,20 +38,18 @@ public class GameBehaviour : MonoBehaviour
         GoToSpwnPoint();
     }
 
-
-
-   private void Update()
-   {
-        if(timeBirds > 0)
+    private void Update()
+    {
+        if (timeBirds > 0)
         {
             timeBirds -= Time.deltaTime;
             timeBeforeBirds -= timeBirds;
-            if(timeBeforeBirds < 0)
+            if (timeBeforeBirds < 0)
             {
                 SoundManager.PlaySfxClip("Bird");
                 timeBeforeBirds = Random.Range(0.2f, 1);
             }
-            if(timeBirds < 0)
+            if (timeBirds < 0)
             {
                 timeBeforeBirds = Random.Range(10, 120);
             }
@@ -60,17 +57,29 @@ public class GameBehaviour : MonoBehaviour
         else
         {
             timeBeforeBirds -= Time.deltaTime;
-            if(timeBeforeBirds < 0)
+            if (timeBeforeBirds < 0)
             {
                 timeBirds = Random.Range(10, 30);
             }
         }
 
         timeBeforeAmbient -= Time.deltaTime;
-        if(timeBeforeAmbient < 0)
+        if (timeBeforeAmbient < 0)
         {
             SoundManager.PlaySfxClip("Ambient");
             timeBeforeAmbient = Random.Range(30, 360);
         }
-   }
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        Debug.Log(other);
+        Debug.Log(other.name);
+        if(other.tag == "Player")
+        {
+            Debug.Log("Player ended game");
+            PlayerControll.Instance.BlockMovement();
+            MenuBehaviour.Instance.ShowEndCutscene();
+        }
+    }
 }

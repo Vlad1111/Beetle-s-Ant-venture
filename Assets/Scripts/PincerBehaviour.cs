@@ -13,6 +13,8 @@ public class PincerBehaviour : MonoBehaviour
     public MyAnimationCollection closeAnimation;
     public MyAnimationCollection openAnimation;
 
+    public Transform particles;
+
     private SpringJoint joint;
     private float force;
     public void SetPincerForce(float value)
@@ -42,6 +44,8 @@ public class PincerBehaviour : MonoBehaviour
                         joint.massScale = massMultiplayer;
                         joint.breakForce = breakingForce;
                         joint.connectedBody = rb;
+
+                        particles.gameObject.SetActive(true);
                     }
                 }
             }
@@ -63,6 +67,7 @@ public class PincerBehaviour : MonoBehaviour
                 foreach (var anim in openAnimation.animations)
                     anim.Play();
                 hasClosed = false;
+                particles.gameObject.SetActive(false);
             }
     }
 }

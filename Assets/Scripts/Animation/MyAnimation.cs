@@ -5,6 +5,9 @@ using UnityEngine;
 public class MyAnimation : MonoBehaviour
 {
     public Transform subject;
+    public AnimationCurve positionX;
+    public AnimationCurve positionY;
+    public AnimationCurve positionZ;
     public AnimationCurve rotationX;
     public AnimationCurve rotationY;
     public AnimationCurve rotationZ;
@@ -16,12 +19,14 @@ public class MyAnimation : MonoBehaviour
     public bool animate = false;
 
     private float curentTime = 0;
+    private Vector3 originalPosition;
     private Vector3 originalRotation;
 
     private void Start()
     {
         if (subject == null)
             subject = transform;
+        originalPosition = subject.localPosition;
         originalRotation = subject.localEulerAngles;
         animate = playOnStart;
     }
@@ -38,10 +43,14 @@ public class MyAnimation : MonoBehaviour
         {
             float time = Mathf.Lerp(timeMargines.x, timeMargines.y, curentTime);
 
-            var offset = new Vector3(rotationX.Evaluate(time), rotationY.Evaluate(time), rotationZ.Evaluate(time));
-            offset += originalRotation;
+            var positionOffset = new Vector3(positionX.Evaluate(time), positionY.Evaluate(time), positionZ.Evaluate(time));
+            positionOffset += originalPosition;
 
-            subject.localEulerAngles = offset;
+            var rotationOffset = new Vector3(rotationX.Evaluate(time), rotationY.Evaluate(time), rotationZ.Evaluate(time));
+            rotationOffset += originalRotation;
+
+            subject.localPosition = positionOffset;
+            subject.localEulerAngles = rotationOffset;
 
             curentTime += Time.deltaTime * animationSpeed;
             if(curentTime > 1)
